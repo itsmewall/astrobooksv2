@@ -1,6 +1,9 @@
+// BookList.js
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const apiUrl = 'http://177.235.140.121';
 const apiPort = 3333;
@@ -8,6 +11,7 @@ const apiPort = 3333;
 const BookList = () => {
   const [books, setBooks] = useState([]);
   const [error, setError] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,8 +27,12 @@ const BookList = () => {
     fetchData();
   }, []);
 
+  const handleBookPress = (id) => {
+    navigation.navigate('BookDetails', { id });
+  };
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={() => handleBookPress(item.id)}>
       <Text style={styles.title}>{item.nome}</Text>
       <Text style={styles.author}>Autor: {item.autor}</Text>
       {/* Adicione mais detalhes conforme necessário */}
